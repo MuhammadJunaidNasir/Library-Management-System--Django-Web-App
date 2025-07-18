@@ -1,0 +1,17 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+<h4>My Issued Books</h4>
+<table class="table table-bordered">
+    <tr>
+        <th>Book</th><th>Issue Date</th><th>Return Date</th>
+    </tr>
+    {% for record in records %}
+    <tr>
+        <td>{{ record.book.title }}</td>
+        <td>{{ record.issue_date }}</td>
+        <td>{{ record.return_date|default:"Not Returned" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

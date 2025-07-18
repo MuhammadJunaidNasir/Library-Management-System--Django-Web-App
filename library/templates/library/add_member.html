@@ -1,0 +1,12 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+<h4>Add Member</h4>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="name" class="form-control mb-2" placeholder="Name">
+    <input type="email" name="email" class="form-control mb-2" placeholder="Email">
+    <input type="text" name="phone" class="form-control mb-2" placeholder="Phone">
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+{% endblock %}

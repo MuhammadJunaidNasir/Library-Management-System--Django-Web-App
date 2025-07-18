@@ -1,0 +1,24 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+<h2>Registered Users</h2>
+
+<form method="get" class="mb-3">
+    <input type="text" name="q" placeholder="Search users..." class="form-control" value="{{ request.GET.q }}">
+</form>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Date Joined</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

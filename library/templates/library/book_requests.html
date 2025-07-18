@@ -1,0 +1,37 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+<h2>Pending Book Requests</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Book</th>
+            <th>Status</th>
+            <th>Requested On</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for req in requests %}
+        <tr>
+            <td>{{ req.user.username }}</td>
+            <td>{{ req.book.title }}</td>
+            <td>{{ req.status }}</td>
+            <td>{{ req.request_date }}</td>
+            <td>
+                <a href="{% url 'approve_request' req.id %}" 
+                   class="btn btn-success btn-sm {% if req.status == 'Approved' %}disabled{% endif %}">
+                   {% if req.status == 'Approved' %}Approved{% else %}Approve{% endif %}
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No pending requests.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

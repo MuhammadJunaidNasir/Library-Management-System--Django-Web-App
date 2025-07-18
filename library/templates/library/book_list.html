@@ -1,0 +1,44 @@
+{% extends 'library/base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<form method="get" class="mb-3">
+    <input type="text" name="q" placeholder="Search books..." class="form-control" value="{{ request.GET.q }}">
+</form>
+
+<a href="{% url 'add_book' %}" class="btn btn-success mb-2">Add Book</a>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Category</th>
+        <th>Actions</th>
+    </tr>
+    {% for book in books %}
+    <tr>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.isbn }}</td>
+        <td>{{ book.category }}</td>
+        <td>
+            {% if user.is_superuser %}
+                <a href="{% url 'edit_book' book.id %}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="{% url 'delete_book' book.id %}" class="btn btn-danger btn-sm">Delete</a>
+            {% else %}
+                {% with status=user_requests|get_item:book.id %}
+                    <form action="{% url 'request_book' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-warning btn-sm" 
+                                {% if status == "Pending" or status == "Approved" %}disabled{% endif %}>
+                            {% if status == "Pending" %}Requested{% elif status == "Approved" %}Approved{% else %}Request Book{% endif %}
+                        </button>
+                    </form>
+                {% endwith %}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

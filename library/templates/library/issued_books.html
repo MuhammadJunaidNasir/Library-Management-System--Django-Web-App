@@ -1,0 +1,29 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+<h4>Issued Books</h4>
+<table class="table table-bordered">
+    <tr>
+        <th>Book</th>
+        <th>Member</th>
+        <th>Issued By</th>
+        <th>Issue Date</th>
+        <th>Return Date</th>
+        <th>Action</th>
+    </tr>
+    {% for record in records %}
+    <tr>
+        <td>{{ record.book.title }}</td>
+        <td>{{ record.member.name }}</td>
+        <td>{{ record.issued_by.username }}</td>
+        <td>{{ record.issue_date }}</td>
+        <td>{{ record.return_date|default:"Not Returned" }}</td>
+        <td>
+            {% if not record.return_date %}
+            <a href="{% url 'return_book' record.id %}" class="btn btn-warning btn-sm">Return</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
