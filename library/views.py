@@ -3,11 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Book, Member, IssueRecord, BookRequest
 from django.utils import timezone
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
-from django.contrib.auth import logout
-from django.shortcuts import redirect
 
 
 # BOOKS
@@ -71,7 +69,6 @@ def member_list(request):
     else:
         users = User.objects.all()
     return render(request, 'library/member_list.html', {'users': users})
-
 
 
 @staff_member_required
@@ -181,7 +178,8 @@ def my_issued_books(request):
     records = IssueRecord.objects.filter(user=request.user)
     return render(request, 'library/my_issued_books.html', {'records': records})
 
+
 def logout_view(request):
+    """Custom logout view that redirects to login page"""
     logout(request)
     return redirect('login')
-
